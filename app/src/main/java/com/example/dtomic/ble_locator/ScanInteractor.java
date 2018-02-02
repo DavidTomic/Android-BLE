@@ -119,7 +119,7 @@ public class ScanInteractor {
             if (!results.isEmpty()) {
                 stopLeScan();
                 ScanResult result = results.get(0);
-                //startInteractActivity(result.getDevice());
+                activity.connect(result.getDevice().getAddress());
             }
         }
 

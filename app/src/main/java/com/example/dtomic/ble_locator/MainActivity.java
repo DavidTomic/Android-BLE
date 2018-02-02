@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.mapView) MapView mapView;
     private MapWorker mapWorker;
     private ScanInteractor scanInteractor;
+    private ConnectInteractor connectInteractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         scanInteractor = new ScanInteractor(this);
+        connectInteractor = new ConnectInteractor(this);
         mapWorker = new MapWorker(mapView, this);
         mapWorker.addMarker(45.8, 16.0);
     }
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         this.mapView.destroyAll();
         AndroidGraphicFactory.clearResourceMemoryCache();
+        connectInteractor.getGattClient().onDestroy();
         super.onDestroy();
     }
 
@@ -67,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "You must grant the location permission.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void connect(String deviceAddress) {
+        connectInteractor.connect(deviceAddress);
     }
 
 }
